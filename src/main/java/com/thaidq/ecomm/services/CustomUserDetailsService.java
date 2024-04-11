@@ -4,6 +4,7 @@ import com.thaidq.ecomm.models.CustomUserDetails;
 import com.thaidq.ecomm.models.User;
 import com.thaidq.ecomm.models.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,8 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
+    @Autowired
     private UserService userService;
 
     @Override

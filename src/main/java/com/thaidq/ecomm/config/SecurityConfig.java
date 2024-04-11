@@ -19,31 +19,32 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/*").permitAll();
-                    request.requestMatchers("/admin/**")
-                            .hasAuthority("ADMIN");
-                    request.anyRequest().authenticated();
-                }).formLogin(login -> login
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((auth) ->
+                        auth.requestMatchers("/*").permitAll()
+                                .requestMatchers("/admin").hasAuthority("ADMIN")
+                                .anyRequest().authenticated())
+                .formLogin(login -> login
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/admin", true)
                 )
-                .build();
+                .logout(logout->logout.logoutUrl("/admin-logout").logoutSuccessUrl("/login"))
+
+        ;
+        return http.build();
 
     }
 
     @Bean
-    BCryptPasswordEncoder bCryptPasswordEncoder(){
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/fe/**", "/assets/**");
+        return (web) -> web.ignoring().requestMatchers("/fe/**", "/assets/**", "/static/**");
     }
 }
