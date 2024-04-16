@@ -19,6 +19,10 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public List<Category> getAll(boolean status) {
+        return categoryRepository.findByCategoryStatus(true);
+    }
+
     public boolean create(Category category) {
         try {
             categoryRepository.save(category);
@@ -47,15 +51,19 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
 
         try {
-            if(category.isPresent()){
+            if (category.isPresent()) {
                 String cName = category.get().getCategoryName();
-                Category newCategory = new Category(id, cName, false);
+                Category newCategory = new Category(id, cName, false, null);
                 categoryRepository.save(newCategory);
                 return true;
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public List<Category> searchCategory(String categoryName){
+        return categoryRepository.searchCategory(categoryName);
     }
 }

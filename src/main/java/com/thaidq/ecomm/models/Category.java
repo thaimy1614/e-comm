@@ -1,15 +1,13 @@
 package com.thaidq.ecomm.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -21,5 +19,7 @@ public class Category {
     private String categoryName;
     @Column(name = "categoryStatus")
     private Boolean categoryStatus;
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products;
 
 }
