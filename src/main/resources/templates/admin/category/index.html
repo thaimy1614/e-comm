@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <div th:replace="admin/fragments/head :: head"></div>
 <body class="hold-transition skin-blue sidebar-mini">
+
+
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -44,7 +46,8 @@
                     <div class="box-tools">
                         <form method="GET" th:action="@{/admin/category/search}">
                             <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                                <input type="text" name="keyword" class="form-control pull-right" placeholder="Search" th:value="${keyword}">
+                                <input type="text" name="keyword" class="form-control pull-right" placeholder="Search"
+                                       th:value="${keyword}">
                                 <div class="input-group-btn">
                                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                                 </div>
@@ -77,11 +80,11 @@
 
                 <div class="box-footer clearfix">
                     <ul class="pagination pagination-sm no-margin pull-right">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">»</a></li>
+                        <li><a th:href="@{'/admin/category/'+${currentPage==1?totalPage:currentPage+(-1)}}">«</a></li>
+                        <th:block th:each="i: ${#numbers.sequence(1, totalPage)}">
+                            <li th:classappend="${currentPage==i?'active':''}"><a th:href="@{'/admin/category/'+${i}}" th:text="${i}"></a></li>
+                        </th:block>
+                        <li><a th:href="@{'/admin/category/'+${currentPage==totalPage?1:currentPage+1}}">»</a></li>
                     </ul>
                 </div>
             </div>

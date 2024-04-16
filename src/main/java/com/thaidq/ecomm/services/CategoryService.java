@@ -4,6 +4,9 @@ import com.thaidq.ecomm.models.Category;
 import com.thaidq.ecomm.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +64,11 @@ public class CategoryService {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public Page<Category> getAll(int pageNo){
+        Pageable pageable = PageRequest.of(pageNo-1, 2);
+        return categoryRepository.findAll(pageable);
     }
 
     public List<Category> searchCategory(String categoryName){

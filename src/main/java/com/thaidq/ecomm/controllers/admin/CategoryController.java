@@ -2,12 +2,15 @@ package com.thaidq.ecomm.controllers.admin;
 
 import com.thaidq.ecomm.models.Category;
 import com.thaidq.ecomm.services.CategoryService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +20,25 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+
+
+
     @GetMapping
     public String index(Model model) {
-        List<Category> list = categoryService.getAll();
+        List<Category> categoryList = categoryService.getAll();
+        int size = categoryList.size();
+        Page<Category> list = categoryService.getAll(1);
+        model.addAttribute("totalPage", list.getTotalPages());
+        model.addAttribute("currentPage", 1);
+        model.addAttribute("categories", list);
+        return "admin/category/index";
+    }
+
+    @GetMapping("/{page}")
+    public String index(Model model, @PathVariable int page){
+        Page<Category> list = categoryService.getAll(page);
+        model.addAttribute("totalPage", list.getTotalPages());
+        model.addAttribute("currentPage", page);
         model.addAttribute("categories", list);
         return "admin/category/index";
     }
